@@ -25,6 +25,17 @@ public:
 private:
     std::map<Vertex, std::vector<Edge>> graphList;
 
+    void walk(const Vertex& start_vertex, std::function<void (const Vertex&)> action, std::set<Vertex>& visited) const {
+        action(start_vertex);
+        visited.insert(start_vertex);
+
+        for (const auto& edge : graphList.at(start_vertex)) {
+            if (visited.find(edge.to) == visited.end()) {
+                walk(edge.to, action, visited);
+            }
+        }
+    }
+
 public:
     bool has_vertex(const Vertex& vertex) const {
         return graphList.find(vertex) != graphList.end();
@@ -236,5 +247,14 @@ public:
             current = predecessor;
         }
         return path;
+    }
+
+    void walk(const Vertex& start_vertex, std::function<void (const Vertex&)> action) const {
+        if (!has_vertex(start_vertex)) {
+            return;
+        }
+
+        std::set<Vertex> visited;
+        walk(start_vertex, action, visited);
     }
 };
