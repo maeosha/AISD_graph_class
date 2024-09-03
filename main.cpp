@@ -258,3 +258,49 @@ public:
         walk(start_vertex, action, visited);
     }
 };
+
+int main(){
+    Graph<int> new_graph;
+    for (auto index = 1; index < 6; index++){
+        new_graph.add_vertex(index);
+    }
+    new_graph.add_edge(1, 2, 3);
+    new_graph.add_edge(2, 5, 3);
+    new_graph.add_edge(2, 3, -2);
+    new_graph.add_edge(1, 3, 2);
+    new_graph.add_edge(3, 4, 1);
+
+    new_graph.add_vertex(12);
+    std::cout << new_graph.has_vertex(12) << std::endl;
+
+    new_graph.remove_vertex(12);
+    std::cout << new_graph.has_vertex(12) << std::endl;
+
+    std::cout << new_graph.has_edge(2, 5) << std::endl;
+
+    std::vector<Graph<int>::Edge> edge_list;
+    edge_list = new_graph.edges();
+
+    for (const auto& edge : edge_list){
+        std::cout << edge.to << " ";
+    }
+    std::cout << std::endl;
+
+    std::vector<Graph<int>::Edge> shortest_path = new_graph.shortest_path(1, 4);
+
+    for (auto& edge : shortest_path){
+        std::cout << edge.to << " ";
+    }
+
+    std::cout << std::endl;
+
+    std::function<void (const int)> action;
+    std::vector<int> visited_vector = {};
+    new_graph.walk(2, [](const int& vertex) {
+        std::cout << vertex << " ";
+    });
+
+    for (auto elem : visited_vector){
+        std::cout << elem << " ";
+    }
+}
